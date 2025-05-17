@@ -1,4 +1,4 @@
-local servers = { 'cssls', 'tailwindcss', 'eslint', 'lua_ls',
+local servers = { 'cssls', 'tailwindcss', 'eslint', 'lua_ls', 'elixirls', 'nixd',
   'rust_analyzer', 'intelephense', 'astro', 'ruby_lsp', 'volar', 'ts_ls', 'gopls', 'zls' }
 
 return {
@@ -8,7 +8,6 @@ return {
     dependencies = {
       { "folke/neodev.nvim",  opts = { experimental = { pathStrict = true } } },
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-      "mason.nvim",
     },
     opts = {
       inlay_hints = { enabled = true },
@@ -29,11 +28,6 @@ return {
         require('lspconfig')[server].setup { on_attach = on_attach, capabilities = capabilities }
       end
 
-      -- local elixir_path = require('mason-registry').get_package('elixir-ls'):get_install_path()
-      -- local elixir_path = require('mason-registry').get_package('elixir-ls'):get_install_path()
-      -- local elixir_ls = elixir_path .. '/language_server.sh'
-      -- require('lspconfig').elixirls.setup { cmd = { elixir_ls }, on_attach = on_attach, capabilities = capabilities }
-
       require('lspconfig').tailwindcss.setup {
         init_options = {
           userLanguages = { elixir = 'html-eex', eelixir = 'html-eex', heex = 'html-eex' },
@@ -41,24 +35,4 @@ return {
       }
     end,
   },
-
-  -- tools for lsp
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    opts = {
-      ensure_installed = servers,
-    },
-    config = function(_, opts)
-      require("mason").setup(opts)
-    end,
-  },
-
-  {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup({ ensure_installed = servers, automatic_installation = false })
-    end
-  }
 }
